@@ -54,6 +54,41 @@ model Balance {
   locked Int
   user   User @relation(fields: [userId], references: [id])
 }
+model Guide {
+  id            Int         @id @default(autoincrement())
+  name          String
+  rating        Float
+  experience    Int
+  location      String
+  price         Int
+  description   String
+  availability  String
+  languages     Language[]  @relation("GuideLanguages")
+  bookings      Booking[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@map("guides") // Optional: Custom table name
+}
+
+model Language {
+  id    Int      @id @default(autoincrement())
+  name  String   @unique
+  guides Guide[] @relation("GuideLanguages")
+  
+  @@map("languages") // Optional: Custom table name
+}
+
+model Booking {
+  id        Int      @id @default(autoincrement())
+  guideId   Int
+  guide     Guide    @relation(fields: [guideId], references: [id])
+  customer  String   // Assuming a simple representation, adjust as needed
+  date      DateTime
+  status    String   // E.g., "confirmed", "pending", etc.
+
+  @@map("bookings") // Optional: Custom table name
+}
 
 enum AuthType {
   Google

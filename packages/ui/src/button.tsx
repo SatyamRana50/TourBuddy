@@ -1,17 +1,32 @@
-"use client";
-
-import { ReactNode } from "react";
+import React from "react";
 
 interface ButtonProps {
-  children: ReactNode;
-  onClick: () => void;
+  onClick?: any;
+  type?: "button" | "submit" | "reset"; // Make type prop optional and restrict values to button types
+  disabled?: boolean; // Make disabled prop optional
+  label: string;
+  className?: string;
+  Icon?: React.ElementType; // Icon prop is optional and should be a valid React component
 }
 
-export const Button = ({ onClick, children }: ButtonProps) => {
+export function Button({
+  onClick,
+  type = "button",
+  disabled = false,
+  label,
+  className,
+  Icon,
+}: ButtonProps) {
   return (
-    <button onClick={onClick} type="button" className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
-      {children}
+    <button
+      type={type}
+      disabled={disabled}
+      onClick={onClick}
+      className={className}
+    >
+      {Icon && <Icon className="w-4 h-4 mr-2" />}{" "}
+      {/* Render Icon if provided */}
+      {label}
     </button>
-
   );
-};
+}
